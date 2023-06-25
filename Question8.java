@@ -1,0 +1,44 @@
+package in.stacks;
+
+import java.util.Stack;
+
+public class Question8 {
+
+	public static int maxDifference(int[] arr) {
+        int n = arr.length;
+        int[] leftSmaller = new int[n];
+        int[] rightSmaller = new int[n];
+
+        Stack<Integer> stack = new Stack<>();
+        for (int i = 0; i < n; i++) {
+            while (!stack.isEmpty() && stack.peek() >= arr[i]) {
+                stack.pop();
+            }
+            leftSmaller[i] = stack.isEmpty() ? 0 : stack.peek();
+            stack.push(arr[i]);
+        }
+
+        stack.clear();
+
+        for (int i = n - 1; i >= 0; i--) {
+            while (!stack.isEmpty() && stack.peek() >= arr[i]) {
+                stack.pop();
+            }
+            rightSmaller[i] = stack.isEmpty() ? 0 : stack.peek();
+            stack.push(arr[i]);
+        }
+
+        int maxDiff = 0;
+        for (int i = 0; i < n; i++) {
+            int diff = Math.abs(leftSmaller[i] - rightSmaller[i]);
+            maxDiff = Math.max(maxDiff, diff);
+        }
+
+        return maxDiff;
+    }
+
+    public static void main(String[] args) {
+        int[] arr1 = {2, 1, 8};
+        System.out.println("Maximum absolute difference: " + maxDifference(arr1));
+    }
+}
